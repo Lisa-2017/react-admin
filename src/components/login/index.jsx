@@ -1,11 +1,16 @@
 import React, {Component} from 'react'
 import {Form, Input, Icon, Button, message} from 'antd'
 import axios from 'axios'
-import  { Redirect } from  'react-router-dom'
+import { connect } from 'react-redux'
+import  {saveUser } from  '@redux/action-creators'
 
 import logo from './logo.png'
 import './index.less'
 
+@connect(
+    null,
+    {saveUser}
+)
 @Form.create()
 class Login extends Component {
 
@@ -71,7 +76,7 @@ class Login extends Component {
 
                 //2.1.1 发送登录请求（本来向5000端口发送，由于跨域问题，此处要3000端口的代理服务器发送）
                 axios.post('http://localhost:3000/api/login',{ username,password })
-                    .then((response)=>{ // 请求成功,不一定就能登录成功，
+                    .then((response)=>{ // 请求成功,不一定就能登录成功，  reponse也可以使用解构赋值提取data属性
                         if(response.data.status===0){ //请求成功并登录成功
                             /*
                             *   response响应返回的响应体数据是个data对象,里面有一个属性是status参照api文档知：status=0表示请求成功
@@ -79,8 +84,19 @@ class Login extends Component {
                             *   登录成功，跳转到home组件
                                 render中可以使用redirect，因为会解析成组件渲染到页面
                                 但是在普通函数中Redirect会被解析成虚拟组件，但是无处渲染  【 return <Redirect to="/" /> 】此处不可以使用
+
+                                <Redirect to="/" /> 用于render方法中进行重定向
+                                 this.props.history.replace("/")  用于非render方法/函数中进行路由跳转
                             */
                             message.success('登录成功')
+
+                            /* 跳转页面之前先保存用户数据
+                                由于登陆以后多页面都需要使用用户数据，所以最好保存到redux中（内存存储：一旦浏览器刷新数据就会丢失了），
+                                所以需要做持久化存储，localstorage（持久化存储） / sessionStorage(会话存储，关闭浏览器就消失)
+                                到action-cerators中保存用户数据
+                             */
+                            this.props.saveUser(response.data.data)
+
                             this.props.history.replace("/") //借助 由Route传递到组件上的form属性中的history上的push/replace方法，实现跳转路由
                         }else{ // 登录失败
                             message.error(response.data.msg)

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Form, Input, Icon, Button, message} from 'antd'
-
+import axios from 'axios'
+import  { Redirect } from  'react-router-dom'
 
 import logo from './logo.png'
 import './index.less'
@@ -32,6 +33,70 @@ class Login extends Component {
         callback() // callback必须调用
     }
 
+    /**
+     * 登录函数
+     */
+    login = (e)=>{
+        //1.先禁止表单的默认行为
+        e.preventDefault()
+
+        //2.手动激活表单校验，form属性上的validateFields方法参数是一个函数。作用：校验并获取一组输入域的值
+            /*
+                error  校验失败报的错误对象，校验通过就是null
+                values  校验通过获取的所有表单项的值
+           */
+        this.props.form.validateFields((error,values)=>{
+            // 2.1验证通过获取表单项的值
+            if(!error){
+                const  { username,password } = values;
+
+                /*  发送请求遇见了跨域问题
+                        浏览器和服务器之间因为：协议，域名，端口号等因素违反了浏览器的同源策略，导致了跨域问题
+                        服务器和服务器之间不存在跨域问题
+                    解决：
+                        1.jsonp 需要修改服务器代码
+                        2.cros 需要修改服务器代码
+                        3.proxy 服务器代理模式（正向代理） ---- 只能用于开发环境，不能用于线上环境
+                            ---webpack中内置有proxy这个功能，默认是关闭的。
+                            开启proxy: 在package.json文件的最后配置： "proxy":"http://localhost:5000"
+                            原理：相当于给浏览器外面包裹了一层服务器，
+                                  浏览器发送请求给代理服务器（浏览器和代理服务器的端口号需要一致），
+                                  代理服务器将请求转发给目标服务器，
+                                  目标服务器返回响应给代理服务器
+                                  代理服务器再将响应结果返回给浏览器，从而解决跨域问题。
+                        4.nginx 服务器代理模式（反向代理） 浏览器只访问代理服务器，由代理服务器将请求分发到不同的服务器上
+
+                */
+
+
+                //2.1.1 发送登录请求（本来向5000端口发送，由于跨域问题，此处要3000端口的代理服务器发送）
+                axios.post('http://localhost:3000/api/login',{ username,password })
+                    .then((response)=>{ // 请求成功,不一定就能登录成功，
+                        if(response.data.status===0){ //请求成功并登录成功
+                            /*
+                            *   response响应返回的响应体数据是个data对象,里面有一个属性是status参照api文档知：status=0表示请求成功
+
+                            *   登录成功，跳转到home组件
+                                render中可以使用redirect，因为会解析成组件渲染到页面
+                                但是在普通函数中Redirect会被解析成虚拟组件，但是无处渲染  【return <Redirect to="/" />】此处不可以使用
+                            */
+                            message.success('登录成功')
+                            return <Redirect to="/" />
+
+                        }else{ // 登录失败
+                            message.error(response.data.msg)
+                        }
+
+                    })
+                    .catch((error)=>{
+                        //请求失败（登录也失败） ---响应状态码是4xx,5xx
+                        message.error('网络错误，请联系管理员')
+                    })
+            }
+
+         })
+    }
+
     render() {
         // 因为使用了Form.create方法，Login组件上面有了form属性，此处通过解构赋值获取form属性里面的 getFieldDecorator方法
         const { getFieldDecorator } = this.props.form  // getFieldDecorator是一个高级组件，专门用来做表单验证的方法
@@ -44,7 +109,7 @@ class Login extends Component {
                 </header>
                 <section className="login-body">
                     <h3>用户登录</h3>
-                    <Form>
+                    <Form onSubmit={this.login}>
                         <Form.Item>
                             {
                                 getFieldDecorator(

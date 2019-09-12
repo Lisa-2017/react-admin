@@ -78,11 +78,10 @@ class Login extends Component {
 
                             *   登录成功，跳转到home组件
                                 render中可以使用redirect，因为会解析成组件渲染到页面
-                                但是在普通函数中Redirect会被解析成虚拟组件，但是无处渲染  【return <Redirect to="/" />】此处不可以使用
+                                但是在普通函数中Redirect会被解析成虚拟组件，但是无处渲染  【 return <Redirect to="/" /> 】此处不可以使用
                             */
                             message.success('登录成功')
-                            return <Redirect to="/" />
-
+                            this.props.history.replace("/") //借助 由Route传递到组件上的form属性中的history上的push/replace方法，实现跳转路由
                         }else{ // 登录失败
                             message.error(response.data.msg)
                         }

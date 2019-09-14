@@ -100,12 +100,20 @@ class Login extends Component {
                             this.props.history.replace("/") //借助 由Route传递到组件上的form属性中的history上的push/replace方法，实现跳转路由
                         }else{ // 登录失败
                             message.error(response.data.msg)
+                            /*// 清空密码框
+                            this.props.form.resetFields(['password']);*/
                         }
 
                     })
                     .catch((error)=>{
                         //请求失败（登录也失败） ---响应状态码是4xx,5xx
                         message.error('网络错误，请联系管理员')
+                       /* // 清空密码框
+                        this.props.form.resetFields(['password']);*/
+                    })
+                    .finally(()=>{ // 无论是成功还是 .then还是.catch 都会走到finally中，不用分别写两次清空了。（ES9的语法）
+                        // 清空密码框
+                        this.props.form.resetFields(['password']);
                     })
             }
 

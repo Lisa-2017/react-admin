@@ -6,7 +6,7 @@ import  widthCheckLogin from  '@conts/width-check-login';
 import { connect } from 'react-redux';
 import  {saveUser } from  '@redux/action-creators';
 
-import logo from './logo.png';
+import logo from '@assets/images/logo.png'
 import './index.less';
 
 @widthCheckLogin

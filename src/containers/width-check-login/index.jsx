@@ -3,7 +3,10 @@ import  {Redirect } from  'react-router-dom'
 import  { connect } from 'react-redux'
 
 
-// 通过高阶组件来做登录验证的功能
+/* 高阶组件
+     通过高阶组件来做登录验证的功能
+     通过Route使用的组件，具有路由的三大属性 history，location，match
+* */
 function widthCheckLogin(WrappedComponent) {
     return connect(
         (state)=>({token:state.user.token}),null
@@ -17,10 +20,11 @@ function widthCheckLogin(WrappedComponent) {
             */
 
             // 当前路径
-            const  { token ,location:{pathname}} = this.props
-            if( pathname === '/login' && token )return <Redirect to="/"/>
-            if(pathname !== '/login' && !token )return <Redirect to="/login"/>
-            return <WrappedComponent/>
+            const  { token ,location,history,match} = this.props;
+            const  { pathname } = location;
+            if( pathname === '/login' && token )return <Redirect to="/"/>;
+            if(pathname !== '/login' && !token )return <Redirect to="/login"/>;
+            return <WrappedComponent location={location} history={history} match={match} />
         }
     })
 }

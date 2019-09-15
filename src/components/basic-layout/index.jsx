@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Layout, Breadcrumb,} from 'antd';
 import widthCheckLogin from  '@conts/with-check-login'
-
+import HeaderMain from  './header-main'
 
 import LeftNav from './left-nav'
 import logo from '@assets/images/logo.png'
@@ -38,7 +38,9 @@ class BasicLayout extends Component {
                     <LeftNav/>
                 </Sider>
                 <Layout>
-                    <Header style={{background: '#fff', padding: 0}}/>
+                    <Header style={{background: '#fff', padding: 0,height:'80px'}}>
+                        <HeaderMain/>
+                    </Header>
                     <Content style={{margin: '0 16px'}}>
                         <Breadcrumb style={{margin: '16px 0'}}>
                             <Breadcrumb.Item>User</Breadcrumb.Item>

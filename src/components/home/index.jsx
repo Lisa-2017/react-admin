@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
+import  widthCheckLogin from  '@conts/width-check-login';
 
+@widthCheckLogin
 class Home extends Component {
     render() {
         return (

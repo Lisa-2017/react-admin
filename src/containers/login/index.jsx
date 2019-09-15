@@ -1,12 +1,15 @@
-import React, {Component} from 'react'
-import {Form, Input, Icon, Button, message} from 'antd'
-import { reqLogin } from '../../api'
-import { connect } from 'react-redux'
-import  {saveUser } from  '@redux/action-creators'
+import React, {Component} from 'react';
+import {Form, Input, Icon, Button, message} from 'antd';
+import { reqLogin } from '../../api';
+import  widthCheckLogin from  '@conts/width-check-login';
 
-import logo from './logo.png'
-import './index.less'
+import { connect } from 'react-redux';
+import  {saveUser } from  '@redux/action-creators';
 
+import logo from './logo.png';
+import './index.less';
+
+@widthCheckLogin
 @connect(
     null,
     {saveUser}

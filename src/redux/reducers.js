@@ -20,7 +20,7 @@ function user(prevState= initUser,action) {
         case  SAVE_USER:
             //1.先进行持久化存储
             setItem('user',action.data.user);
-            setItem('user',action.data.token);
+            setItem('token',action.data.token);
             return action.data;
         default :
             return prevState;

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Layout, Breadcrumb,} from 'antd';
+import widthCheckLogin from  '@conts/with-check-login'
 
 
 import LeftNav from './left-nav'
@@ -9,7 +10,7 @@ import  './index.less'
 
 const {Header, Content, Footer, Sider} = Layout;
 
-
+@widthCheckLogin
 class BasicLayout extends Component {
     state = {
         collapsed: false,

@@ -17,14 +17,16 @@ function widthCheckLogin(WrappedComponent) {
             /* 登录校验
                 判断当前地址是否是/login：如果没登录路由指向Login,已登录路由指向首页
                 判断当前地址是否是/，如果没登录路由指向Login,已登录路由指向首页
+                ...rest:包含剩下的所有属性的一个对象（location,history,match,children）
             */
 
             // 当前路径
-            const  { token ,location,history,match} = this.props;
-            const  { pathname } = location;
+            const  { token ,...rest } = this.props;
+            const  { location:{ pathname } }= rest;
+
             if( pathname === '/login' && token )return <Redirect to="/"/>;
             if(pathname !== '/login' && !token )return <Redirect to="/login"/>;
-            return <WrappedComponent location={location} history={history} match={match} />
+            return <WrappedComponent {...rest} />
         }
     })
 }

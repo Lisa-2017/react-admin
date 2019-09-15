@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import { BrowserRouter as Router , Route ,Switch} from 'react-router-dom'
-import NotMatch from '@comps/not-match'
-import BasicLayout from '@comps/basic-layout'
-import  routes from  './config/routes'
+import { BrowserRouter as Router , Route ,Switch} from 'react-router-dom';
+import Login  from  '@conts/login';
+import NotMatch from '@comps/not-match';
+import BasicLayout from '@comps/basic-layout';
+import  routes from  './config/routes';
 
 
 
@@ -24,19 +25,24 @@ import  routes from  './config/routes'
                 */}
 
                 {/* 方式三： 创建一个路由组件专门管理路由组件 【推荐】*/}
-                <BasicLayout>
-                    <Switch>
-                        {
-                            routes.map((route,index)=>{
-                                // return <Route path={route.path} exact={route.exact} component={route.component} />
-                                // 因为不需要动态增删改，所以此处可以使用index 标识key
-                                return <Route  {...route} key={index}/>
-                            })
-                        }
-                        {/*省略path属性不写，就是匹配所有路径*/}
-                        <Route  component={NotMatch}/>
-                    </Switch>
-                </BasicLayout>
+
+                <Switch>
+                    <Route path='/login' component={Login} exact/>
+                    <BasicLayout>
+                        <Switch>
+                            {
+                                routes.map((route,index)=>{
+                                    // return <Route path={route.path} exact={route.exact} component={route.component} />
+                                    // 因为不需要动态增删改，所以此处可以使用index 标识key
+                                    return <Route  {...route} key={index}/>
+                                })
+                            }
+                            {/*省略path属性不写，就是匹配所有路径*/}
+                            <Route  component={NotMatch}/>
+                        </Switch>
+                    </BasicLayout>
+                </Switch>
+
             </Router>
         )
     }

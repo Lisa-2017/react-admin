@@ -2,4 +2,6 @@
 
 import axios from './request'
 
-export  const reqLogin = (username,password)=>axios.post('/login',{ username,password })
+export  const reqLogin = (username,password)=>axios.post('/login',{ username,password });
+export  const reqGetCategories = ()=>axios.get('/category/get');
+export  const reqAddCategory = (categoryName)=>axios.post('/category/add',{categoryName});

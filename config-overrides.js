@@ -22,5 +22,7 @@ module.exports = override(
     '@config': resolve(__dirname, 'src/config'),
     '@redux': resolve(__dirname, 'src/redux'),
     '@assets': resolve(__dirname, 'src/assets'),
+    '@api': resolve(__dirname, 'src/api'),
+
   })
 );

@@ -3,7 +3,13 @@
 */
 
 import  { combineReducers } from  'redux'
-import { SAVE_USER, REMOVE_USER, SET_TITLE  } from './action-types'
+import {
+    SAVE_USER,
+    REMOVE_USER,
+    SET_TITLE ,
+    GET_CATEGORIES_SUCCESS,
+    ADD_CATEGORY_SUCCESS
+} from './action-types'
 import {setItem, getItem, removeItem} from '../utils/storage'
 
 
@@ -43,11 +49,23 @@ function title(prevState = '', action) {
     }
 }
 
+function categories(prevState = [], action) {
+    switch (action.type) {
+        case GET_CATEGORIES_SUCCESS :
+            return action.data;
+        case ADD_CATEGORY_SUCCESS:
+            return [...prevState,action.data];
+        default :
+            return prevState;
+    }
+}
+
 
 
 
 // 整合多个需要暴露的文件，调用combineReducers（），参数传对象，对象中可以写多个需要暴露的reducer
 export default combineReducers({
     user,
-    title
+    title,
+    categories
 })

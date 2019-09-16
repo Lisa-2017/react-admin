@@ -115,7 +115,7 @@ class Category extends Component {
             <Card
                 title="分类列表"
                 extra={<Button type="primary"
-                onClick={this.toggleModal(true)}
+                onClick={this.toggleModal('isShowAddCategoryModal',true)}
                 >
                 <Icon type="plus"/>分类列表</Button>}>
 
@@ -154,6 +154,7 @@ class Category extends Component {
                 >
                     <UpdateCategoryForm ref={this.updateCategoryForm} categoryName={ category.name}/>
                 </Modal>
+
             </Card>
         )
     }

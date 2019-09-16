@@ -3,8 +3,8 @@
 */
 
 import  { combineReducers } from  'redux'
-import { SAVE_USER } from './action-types'
-import  {setItem,getItem} from '../utils/storage'
+import { SAVE_USER, REMOVE_USER, SET_TITLE  } from './action-types'
+import {setItem, getItem, removeItem} from '../utils/storage'
 
 
 
@@ -21,13 +21,33 @@ function user(prevState= initUser,action) {
             //1.先进行持久化存储
             setItem('user',action.data.user);
             setItem('token',action.data.token);
+            return action.data
+        case REMOVE_USER:
+            removeItem('user')
+            removeItem('token')
+            return {
+                user: {},
+                token: ''
+            }
+        default :
+            return prevState;
+    }
+}
+
+function title(prevState = '', action) {
+    switch (action.type) {
+        case SET_TITLE :
             return action.data;
         default :
             return prevState;
     }
 }
 
+
+
+
 // 整合多个需要暴露的文件，调用combineReducers（），参数传对象，对象中可以写多个需要暴露的reducer
 export default combineReducers({
-    user
+    user,
+    title
 })

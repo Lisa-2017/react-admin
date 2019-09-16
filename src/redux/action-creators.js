@@ -7,9 +7,10 @@ import {
     REMOVE_USER,
     SET_TITLE,
     GET_CATEGORIES_SUCCESS,
-    ADD_CATEGORY_SUCCESS
+    ADD_CATEGORY_SUCCESS,
+    UPDATE_CATEGORY_SUCCESS
 } from './action-types'
-import { reqGetCategories,reqAddCategory } from '@api';
+import { reqGetCategories,reqAddCategory,reqUpdateCategory } from '@api';
 
 
 // 保存用户数据
@@ -46,3 +47,13 @@ export  const  addCategory = (categoryName)=>{
         dispatch(addCategorySuccess(result))
     }
 }
+
+/* 修改分类数据 ----同步action */
+const updateCategorySuccess = (category) => ({type: UPDATE_CATEGORY_SUCCESS, data: category});
+/* 修改分类数据 ----异步action */
+export const updateCategory = (categoryId, categoryName) => {
+    return async (dispatch) => {
+        const result = await reqUpdateCategory(categoryId, categoryName);
+        dispatch(updateCategorySuccess(result));
+    }
+};

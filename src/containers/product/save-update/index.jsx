@@ -7,7 +7,7 @@ import draftToHtml from 'draftjs-to-html';
 import { connect } from 'react-redux';
 import { getCategories } from '@redux/action-creators';
 
-import  {reqAddProducts,reqUpdateProducts } from '@api'
+import  {reqAddProduct,reqUpdateProduct } from '@api'
 
 import RichTextEditor from '../rich-text-editor';
 
@@ -20,9 +20,7 @@ const { Option } = Select;
 )
 @Form.create()
 class SaveUpdate extends Component {
-
     richTextEditor = React.createRef();
-
     submit = (e) => {
         e.preventDefault();
 
@@ -40,9 +38,9 @@ class SaveUpdate extends Component {
                 const  product = this.props.location.state;
                 if(product){
                   const  productId = product._id;
-                  await reqUpdateProducts({name,desc,price,categoryId,detail,productId})
+                  await reqUpdateProduct({name,desc,price,categoryId,detail,productId})
                 }else{
-                  await reqAddProducts({name, desc, price, categoryId ,detail})
+                  await reqAddProduct({name, desc, price, categoryId ,detail})
                 }
 
 
@@ -55,12 +53,10 @@ class SaveUpdate extends Component {
             }
         })
     };
-
     componentDidMount() {
         if (this.props.categories.length) return;
         this.props.getCategories();
     }
-
     goBack=()=>{
         this.props.history.goBack();
     }

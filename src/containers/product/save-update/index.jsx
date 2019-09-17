@@ -7,6 +7,8 @@ import draftToHtml from 'draftjs-to-html';
 import { connect } from 'react-redux';
 import { getCategories } from '@redux/action-creators';
 
+import  {reqAddProducts} from '@api'  // 请求添加产品
+
 import RichTextEditor from '../rich-text-editor';
 
 const { Item } = Form;
@@ -24,7 +26,7 @@ class SaveUpdate extends Component {
     submit = (e) => {
         e.preventDefault();
 
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 const { editorState } = this.richTextEditor.current.state;
                 // 将 editorState 装换成 html 文本
@@ -32,7 +34,13 @@ class SaveUpdate extends Component {
                 // console.log(detail);
                 const { name, desc, price, categoryId } = values;
                 // console.log(name, desc, price, categoryId);
-                // 发送请求
+
+                // 发送请求 （放在对象中方便解构赋值提取，避免因参数顺序写错导致错误）
+                const result = await reqAddProducts({name, desc, price, categoryId ,detail})
+
+                // 跳转到 /product
+
+                this.props.history.push("/product");
 
             }
         })

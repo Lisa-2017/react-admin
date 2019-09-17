@@ -8,5 +8,5 @@ export  const reqAddCategory = (categoryName)=>axios.post('/category/add',{categ
 export const reqUpdateCategory = (categoryId, categoryName) => axios.post('/category/update', { categoryId, categoryName });
 
 export const reqGetProducts = (pageNum, pageSize) => axios.get('/product/list', {params:{pageNum, pageSize}});
-
 export const reqAddProducts = ({name,desc,price,categoryId,detail}) => axios.post('/product/add', {name,desc,price,categoryId,detail});
+export const reqUpdateProducts = ({name,desc,price,categoryId,detail,productId}) => axios.post('/product/update', {name,desc,price,categoryId,detail,productId});

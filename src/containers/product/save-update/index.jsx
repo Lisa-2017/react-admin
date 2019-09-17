@@ -7,7 +7,7 @@ import draftToHtml from 'draftjs-to-html';
 import { connect } from 'react-redux';
 import { getCategories } from '@redux/action-creators';
 
-import  {reqAddProducts} from '@api'  // 请求添加产品
+import  {reqAddProducts,reqUpdateProducts } from '@api'
 
 import RichTextEditor from '../rich-text-editor';
 
@@ -36,7 +36,17 @@ class SaveUpdate extends Component {
                 // console.log(name, desc, price, categoryId);
 
                 // 发送请求 （放在对象中方便解构赋值提取，避免因参数顺序写错导致错误）
-                const result = await reqAddProducts({name, desc, price, categoryId ,detail})
+                // (如果product有值则发送更新请求，无值发送添加请求)
+                const  product = this.props.location.state;
+                if(product){
+                  const  productId = product._id;
+                  await reqUpdateProducts({name,desc,price,categoryId,detail,productId})
+                }else{
+                  await reqAddProducts({name, desc, price, categoryId ,detail})
+                }
+
+
+
 
                 // 跳转到 /product
 
@@ -57,11 +67,12 @@ class SaveUpdate extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const  product = this.props.location.state;
 
         return (
             <Card  title={<div>
                         <Icon type="arrow-left" onClick={this.goBack}/>
-                        <span>添加商品</span>
+                        <span>{ product ? '更新' : '添加' }商品</span>
                     </div>}>
                 <Form labelCol={{span:2}} wrapperCol={{span:8}} onSubmit={this.submit}>
                     <Item label="商品名称">
@@ -71,7 +82,8 @@ class SaveUpdate extends Component {
                                 {
                                     rules:[
                                         {required:true,message:'请输入商品名称'}
-                                    ]
+                                    ],
+                                    initialValue:product?product.name:''
                                 }
                             )(
                                 <Input placeholder="请输入商品名称"/>
@@ -85,7 +97,8 @@ class SaveUpdate extends Component {
                                 {
                                     rules:[
                                         {required:true,message:'请输入商品描述'}
-                                    ]
+                                    ],
+                                    initialValue:product?product.desc:''
                                 }
                             )(
                                 <Input placeholder="请输入商品描述"/>
@@ -99,7 +112,8 @@ class SaveUpdate extends Component {
                                 {
                                     rules:[
                                         {required:true,message:'请选择商品分类'}
-                                    ]
+                                    ],
+                                    initialValue:product?product.categoryId:''
                                 }
                             )(
                                 <Select placeholder="请选择商品分类">
@@ -121,7 +135,8 @@ class SaveUpdate extends Component {
                                 {
                                     rules:[
                                         {required:true,message:'请输入商品价格'}
-                                    ]
+                                    ],
+                                    initialValue:product?product.price:''
                                 }
                             )(
                                <InputNumber
@@ -134,7 +149,7 @@ class SaveUpdate extends Component {
                     </Item>
 
                     <Item label="商品详情" wrapperCol={{span: 20}}>
-                        <RichTextEditor ref={this.richTextEditor}/>
+                        <RichTextEditor ref={this.richTextEditor} detail={ product?product.detail:'' }/>
                     </Item>
 
                     <Item>

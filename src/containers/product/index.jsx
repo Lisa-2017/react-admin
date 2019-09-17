@@ -20,7 +20,7 @@ class Product extends Component {
         },
         {
             title: '价格',
-            dataIndex: 'price'
+            dataIndex: 'price'  // 只能得到price的值
         },
         {
             title: '状态',
@@ -34,10 +34,10 @@ class Product extends Component {
         },
         {
             title: '操作',
-            render: () => {
+            render: (product) => {   // 不写dataIndex，而使用render,可以得到整条信息的对象
                 return <div>
                     <Button type="link">详情</Button>
-                    <Button type="link">修改</Button>
+                    <Button type="link" onClick={this.goSaveUpdate(product)}>修改</Button>
                 </div>
             }
         }
@@ -52,16 +52,19 @@ class Product extends Component {
     }
 
     componentDidMount() {
-        this.getProducts(1,2)
+        this.getProducts(1,3)
     }
 
-    goSaveUpdate = ()=>{
-        this.props.history.push('/product/saveupdate');
+    goSaveUpdate = (product)=>{
+        return ()=>{
+            this.props.history.push('/product/saveupdate',product);
+        }
+
     }
 
     render() {
         const {products,total} = this.state;
-        return (
+                return (
             <Card
                 title={<div>
                         <Select defaultValue="1">
@@ -72,7 +75,7 @@ class Product extends Component {
                         <Button type="primary">搜索</Button>
                     </div>
                 }
-                extra ={ <Button type="primary" onClick={this.goSaveUpdate}><Icon type="plus" /> 添加商品</Button>  }
+                extra ={ <Button type="primary" onClick={this.goSaveUpdate()}><Icon type="plus" /> 添加商品</Button>  }
             >
                 <Table
                     columns={this.columns}

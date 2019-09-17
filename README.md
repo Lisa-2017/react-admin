@@ -17,11 +17,7 @@
   - git commit -m 'xxx'
   - git push origin dev  推送到远程dev分支
   
-<<<<<<< HEAD
-- 半成品项目，先拉取项目代码
-=======
 - 拿到半成品项目，先拉取项目代码
->>>>>>> fcf58d77e7295804c6cf0a87ec228865c09fae35
   - git clone xxx     克隆下来的默认只有master主分支，需要dev分支开发时：
   - git fetch origin dev:dev  在仓库里面，拉取远程仓库上的dev重命名为本地dev
   

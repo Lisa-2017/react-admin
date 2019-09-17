@@ -51,12 +51,16 @@ class SaveUpdate extends Component {
         this.props.getCategories();
     }
 
+    goBack=()=>{
+        this.props.history.goBack();
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
 
         return (
             <Card  title={<div>
-                        <Icon type="arrow-left"/>
+                        <Icon type="arrow-left" onClick={this.goBack}/>
                         <span>添加商品</span>
                     </div>}>
                 <Form labelCol={{span:2}} wrapperCol={{span:8}} onSubmit={this.submit}>

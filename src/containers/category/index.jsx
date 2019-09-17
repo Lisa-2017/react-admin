@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Card,Button,Icon,Table,Modal} from "antd";
 import { connect } from 'react-redux';
-import { getCategories,addCategory,updateCategory } from "@redux/action-creators";
+import { getCategories,addCategory,updateCategory,deleteCategory } from "@redux/action-creators";
 
 import AddCategoryForm from './add-category-form';
 import UpdateCategoryForm from  './update-category-form'
@@ -11,13 +11,13 @@ import './index.less'
 
 @connect(
     (state) => ({categories: state.categories}),
-    { getCategories, addCategory ,updateCategory}
+    { getCategories, addCategory ,updateCategory,deleteCategory}
 )
 class Category extends Component {
     state = {
         isShowAddCategoryModal:false,
         isShowUpdateCategoryModal:false,
-        category:{}
+        category:{},
     };
 
     addCategoryForm = React.createRef();
@@ -26,14 +26,21 @@ class Category extends Component {
         {
             title:'品类名称', // 表头名称
             dataIndex:'name',// 是唯一的key，（决定显示的内容）
+            // render: text => <a>{text}</a>, // 默认是纯文本，如果要加上指定标签，就得render方法
         },
         {
             title:'操作',
-            // dataIndex:'operation', 写了dataIndex，render方法的参数就是对应的值。 不写得到就是整个对象
+            // dataIndex:'operation',
             render:(category)=>{
+
+            /*
+             如果有dataIndex，根据它的值来获取要渲染data的对应属性值，放在render方法作为参数传入
+             如果没有dataIndex，就会将整个data数据，放在render方法作为参数传入
+            */
+
                 return <div>
                     <Button type="link" onClick={this.showUpdateCategoryModal(category)}>修改分类 </Button>
-                    <Button type="link">删除分类 </Button>
+                    <Button type="link" onClick={ this.showdeleteCategoryModal(category) }>删除分类 </Button>
                 </div>
             }
         }
@@ -83,8 +90,12 @@ class Category extends Component {
 
     updateCategory = ()=>{
         const  form = this.updateCategoryForm.current;
+        // console.log(this.state.category)   // 分类id和分类名对象  {_id: "5d7f7961c3261b386ccf14e1", name: "cc", __v: 0}
+
         //检验表单
         form.validateFields((err,values)=>{
+            //console.log(values) // 分类名对象 {categoryName: "cc"}
+
             if(!err){
                 // 表单验证通过
                 this.props.updateCategory(this.state.category._id,values.categoryName)
@@ -108,6 +119,16 @@ class Category extends Component {
 
     }
 
+    showdeleteCategoryModal = (category)=>{
+        return ()=>{
+            Modal.confirm({
+                title: '删除分类',
+                okText:'确认',
+                cancelText:'取消',
+                onOk: () => { this.props.deleteCategory(category._id);},
+            })
+        }
+    }
 
     render() {
         const  { categories }= this.props;

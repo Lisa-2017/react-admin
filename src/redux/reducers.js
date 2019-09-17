@@ -6,10 +6,10 @@ import  { combineReducers } from  'redux'
 import {
     SAVE_USER,
     REMOVE_USER,
-    SET_TITLE ,
+    SET_TITLE,
     GET_CATEGORIES_SUCCESS,
     ADD_CATEGORY_SUCCESS,
-    UPDATE_CATEGORY_SUCCESS
+    UPDATE_CATEGORY_SUCCESS, DELETE_CATEGORY_SUCCESS
 } from './action-types'
 import {setItem, getItem, removeItem} from '../utils/storage'
 
@@ -62,6 +62,10 @@ function categories(prevState = [], action) {
                     return action.data;
                 }
                 return category;
+            });
+        case DELETE_CATEGORY_SUCCESS:
+            return prevState.filter((category)=>{
+                return category._id !== action.data;
             })
         default :
             return prevState;

@@ -8,9 +8,10 @@ import {
     SET_TITLE,
     GET_CATEGORIES_SUCCESS,
     ADD_CATEGORY_SUCCESS,
-    UPDATE_CATEGORY_SUCCESS
+    UPDATE_CATEGORY_SUCCESS,
+    DELETE_CATEGORY_SUCCESS
 } from './action-types'
-import { reqGetCategories,reqAddCategory,reqUpdateCategory } from '@api';
+import { reqGetCategories,reqAddCategory,reqUpdateCategory,reqDeleteCategory } from '@api';
 
 
 // 保存用户数据
@@ -57,3 +58,14 @@ export const updateCategory = (categoryId, categoryName) => {
         dispatch(updateCategorySuccess(result));
     }
 };
+
+/* 删除分类数据 ----同步action */
+const deleteCategorySuccess = (category) => ({type: DELETE_CATEGORY_SUCCESS, data: category});
+/* 删除分类数据 ----异步action */
+export const deleteCategory = (categoryId) => {
+    return async (dispatch) => {
+        const result = await reqDeleteCategory(categoryId);
+        dispatch(deleteCategorySuccess(result));
+    }
+};
+

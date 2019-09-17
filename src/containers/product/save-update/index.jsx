@@ -18,6 +18,9 @@ const { Option } = Select;
 )
 @Form.create()
 class SaveUpdate extends Component {
+
+    richTextEditor = React.createRef();
+
     submit = (e) => {
         e.preventDefault();
 
@@ -26,9 +29,9 @@ class SaveUpdate extends Component {
                 const { editorState } = this.richTextEditor.current.state;
                 // 将 editorState 装换成 html 文本
                 const detail = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-                console.log(detail);
+                // console.log(detail);
                 const { name, desc, price, categoryId } = values;
-                console.log(name, desc, price, categoryId);
+                // console.log(name, desc, price, categoryId);
                 // 发送请求
 
             }
@@ -127,7 +130,6 @@ class SaveUpdate extends Component {
                     </Item>
 
                 </Form>
-                SaveUpdate
             </Card>
         )
     }

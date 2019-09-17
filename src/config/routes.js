@@ -2,6 +2,7 @@
 import Home from "../components/home";
 import Category from "../containers/category";
 import Product from '@conts/product';
+import SaveUpdate from '@conts/product/save-update';
 
 const  routes = [
     {
@@ -18,7 +19,12 @@ const  routes = [
         path:'/product',
         exact:true,
         component:Product
-    }
+    },
+    {
+        path:'/product/saveupdate',
+        exact:true,
+        component:SaveUpdate
+    },
 ] ;
 
 export  default routes;

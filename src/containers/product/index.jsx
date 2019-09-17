@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import { Card, Select, Input, Button, Icon, Table } from 'antd';
-
+import { reqGetProducts } from '@api';
 import './index.less';
 
 const { Option } = Select;
 class Product extends Component {
-    state={
+    state = {
         total:0,
         product:[]
     }
@@ -43,8 +43,24 @@ class Product extends Component {
         }
     ]
 
+    getProducts= async (pageNum,pageSize)=>{
+        const result = await reqGetProducts(pageNum,pageSize);
+        this.setState({
+            total:result.total,
+            products:result.list
+        })
+    }
+
+    componentDidMount() {
+        this.getProducts(1,2)
+    }
+
+    goSaveUpdate = ()=>{
+        this.props.history.push('/product/saveupdate');
+    }
 
     render() {
+        const {products,total} = this.state;
         return (
             <Card
                 title={<div>
@@ -56,17 +72,20 @@ class Product extends Component {
                         <Button type="primary">搜索</Button>
                     </div>
                 }
-                extra ={ <Button type="primary"><Icon type="plus" /> 添加商品</Button>  }
+                extra ={ <Button type="primary" onClick={this.goSaveUpdate}><Icon type="plus" /> 添加商品</Button>  }
             >
                 <Table
                     columns={this.columns}
-                    dataSource={[]}
+                    dataSource={products}
                     bordered
                     pagination={{
                         showQuickJumper: true,
                         showSizeChanger: true,
                         pageSizeOptions: ['3', '6', '9', '12'],
-                        defaultPageSize: 3
+                        defaultPageSize: 3,
+                        total,
+                        onChange: this.getProducts,
+                        onShowSizeChange: this.getProducts
                     }}
                     rowKey="_id"
 

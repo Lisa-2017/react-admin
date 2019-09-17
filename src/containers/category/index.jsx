@@ -48,7 +48,9 @@ class Category extends Component {
         }
     }
 
-    componentDidMount() { // 发送请求，请求分类数据，更新redux状态
+    componentDidMount() {
+        if (this.props.categories.length) return;// 判断数据是否已存在，不存在则发送请求
+        // 发送请求，请求分类数据，更新redux状态
         this.props.getCategories()
     }
 

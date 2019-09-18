@@ -9,9 +9,10 @@ import {
     GET_CATEGORIES_SUCCESS,
     ADD_CATEGORY_SUCCESS,
     UPDATE_CATEGORY_SUCCESS,
-    DELETE_CATEGORY_SUCCESS
+    DELETE_CATEGORY_SUCCESS,
+    GET_ROLES_SSUCCESS
 } from './action-types'
-import { reqGetCategories,reqAddCategory,reqUpdateCategory,reqDeleteCategory } from '@api';
+import { reqGetCategories,reqAddCategory,reqUpdateCategory,reqDeleteCategory,reqGetRoles } from '@api';
 
 
 // 保存用户数据
@@ -68,4 +69,14 @@ export const deleteCategory = (categoryId) => {
         dispatch(deleteCategorySuccess(result));
     }
 };
+
+/* 获取权限数据 ----同步action */
+const getRolesSuccess = (roles)=>({type:GET_ROLES_SSUCCESS,data:roles})
+/* 获取权限数据 ----异步action */
+export  const  getRoles = ()=>{
+    return async (dispatch)=>{
+        const  result = await reqGetRoles();
+        dispatch(getRolesSuccess(result));
+    }
+}
 

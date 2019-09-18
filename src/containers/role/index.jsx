@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { Card, Button, Table, Radio, Modal } from 'antd';
+import  dayjs from 'dayjs'
+import { connect } from  'react-redux';
+import  { getRoles } from  '@redux/action-creators'
+
 
 import AddRoleForm from './add-role-form';
 import UpdateRoleForm from './update-role-form';
 
 const RadioGroup = Radio.Group;
 
+
+@connect(
+  (state)=>({roles:state.roles}),
+  {getRoles}
+)
 class Role extends Component {
   state = {
     value: '',  //单选的默认值，也就是选中的某个角色的id值
-    roles: [], //权限数组
     isShowAddRoleModal: false, //是否展示创建角色的标识
     isShowUpdateRoleModal: false, //是否展示设置角色的标识
     isDisabled: false
@@ -17,6 +25,10 @@ class Role extends Component {
 
   addRoleFormRef = React.createRef();
   updateRoleFormRef = React.createRef();
+  componentDidMount() {
+    this.props.getRoles();
+  }
+
 
   columns = [{
     dataIndex: '_id',
@@ -54,8 +66,8 @@ class Role extends Component {
   updateRole = () => {};
   
   render () {
-    const { roles, value, isDisabled, isShowAddRoleModal, isShowUpdateRoleModal } = this.state;
-    
+    const { value, isDisabled, isShowAddRoleModal, isShowUpdateRoleModal } = this.state;
+    const { roles } = this.props
     return (
       <Card
         title={

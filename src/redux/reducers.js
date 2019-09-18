@@ -9,7 +9,9 @@ import {
     SET_TITLE,
     GET_CATEGORIES_SUCCESS,
     ADD_CATEGORY_SUCCESS,
-    UPDATE_CATEGORY_SUCCESS, DELETE_CATEGORY_SUCCESS
+    UPDATE_CATEGORY_SUCCESS,
+    DELETE_CATEGORY_SUCCESS,
+    GET_ROLES_SSUCCESS
 } from './action-types'
 import {setItem, getItem, removeItem} from '../utils/storage'
 
@@ -72,6 +74,14 @@ function categories(prevState = [], action) {
     }
 }
 
+function roles( prevState = [],action ) {
+    switch (action.type) {
+        case GET_ROLES_SSUCCESS:
+            return action.data;
+        default:
+            return prevState;
+    }
+}
 
 
 
@@ -79,5 +89,6 @@ function categories(prevState = [], action) {
 export default combineReducers({
     user,
     title,
-    categories
+    categories,
+    roles
 })

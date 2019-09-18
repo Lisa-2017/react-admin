@@ -20,7 +20,7 @@ class Role extends Component {
     value: '',  //单选的默认值，也就是选中的某个角色的id值
     isShowAddRoleModal: false, //是否展示创建角色的标识
     isShowUpdateRoleModal: false, //是否展示设置角色的标识
-    isDisabled: false
+    isDisabled: true
   };
 
   addRoleFormRef = React.createRef();
@@ -39,9 +39,11 @@ class Role extends Component {
   }, {
     title: '创建时间',
     dataIndex: 'createTime',
+    render:(time)=>dayjs(time).format('YYYY-MM-DD HH:mm:ss')
   }, {
     title: '授权时间',
     dataIndex: 'authTime',
+    render:(time)=>dayjs(time).format('YYYY-MM-DD HH:mm:ss')
   }, {
     title: '授权人',
     dataIndex: 'authName',

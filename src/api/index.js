@@ -16,3 +16,5 @@ export const reqUpdateProduct  = ({name,desc,price,categoryId,detail,productId})
 
 
 export const reqSearchProducts = ({searchKey , searchValue , pageNum, pageSize}) => axios.get('/product/search', { params: {[searchKey]:searchValue , pageNum, pageSize }});
+
+

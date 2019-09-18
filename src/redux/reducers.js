@@ -11,7 +11,8 @@ import {
     ADD_CATEGORY_SUCCESS,
     UPDATE_CATEGORY_SUCCESS,
     DELETE_CATEGORY_SUCCESS,
-    GET_ROLES_SSUCCESS
+    GET_ROLES_SSUCCESS,
+    ADD_ROLE_SUCCESS
 } from './action-types'
 import {setItem, getItem, removeItem} from '../utils/storage'
 
@@ -78,6 +79,8 @@ function roles( prevState = [],action ) {
     switch (action.type) {
         case GET_ROLES_SSUCCESS:
             return action.data;
+        case ADD_ROLE_SUCCESS:
+            return[...prevState,action.data]
         default:
             return prevState;
     }

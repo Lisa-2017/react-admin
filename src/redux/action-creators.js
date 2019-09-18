@@ -10,9 +10,13 @@ import {
     ADD_CATEGORY_SUCCESS,
     UPDATE_CATEGORY_SUCCESS,
     DELETE_CATEGORY_SUCCESS,
-    GET_ROLES_SSUCCESS
+    GET_ROLES_SSUCCESS,
+    ADD_ROLE_SUCCESS
 } from './action-types'
-import { reqGetCategories,reqAddCategory,reqUpdateCategory,reqDeleteCategory,reqGetRoles } from '@api';
+import {
+    reqGetCategories,reqAddCategory,reqUpdateCategory,reqDeleteCategory,
+    reqGetRoles,reqAddRole
+} from '@api';
 
 
 // 保存用户数据
@@ -77,6 +81,16 @@ export  const  getRoles = ()=>{
     return async (dispatch)=>{
         const  result = await reqGetRoles();
         dispatch(getRolesSuccess(result));
+    }
+}
+
+/* 添加角色权限数据 ----同步action */
+const addRoleSuccess = (role)=>({type:ADD_ROLE_SUCCESS,data:role})
+/* 添加角色权限数据 ----异步action */
+export  const  addRole = (name)=>{
+    return async (dispatch)=>{
+        const  result = await reqAddRole(name);
+        dispatch(addRoleSuccess(result));
     }
 }
 

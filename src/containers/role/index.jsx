@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Button, Table, Radio, Modal } from 'antd';
 import  dayjs from 'dayjs'
 import { connect } from  'react-redux';
-import  { getRoles } from  '@redux/action-creators'
+import  { getRoles ,addRole } from  '@redux/action-creators'
 
 
 import AddRoleForm from './add-role-form';
@@ -13,7 +13,7 @@ const RadioGroup = Radio.Group;
 
 @connect(
   (state)=>({roles:state.roles}),
-  {getRoles}
+  {getRoles,addRole }
 )
 class Role extends Component {
   state = {
@@ -25,6 +25,7 @@ class Role extends Component {
 
   addRoleFormRef = React.createRef();
   updateRoleFormRef = React.createRef();
+
   componentDidMount() {
     this.props.getRoles();
   }
@@ -39,11 +40,11 @@ class Role extends Component {
   }, {
     title: '创建时间',
     dataIndex: 'createTime',
-    render:(time)=>dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    render:(time)=>time && dayjs(time).format('YYYY-MM-DD HH:mm:ss')
   }, {
     title: '授权时间',
     dataIndex: 'authTime',
-    render:(time)=>dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    render:(time)=>time && dayjs(time).format('YYYY-MM-DD HH:mm:ss')
   }, {
     title: '授权人',
     dataIndex: 'authName',
@@ -63,7 +64,22 @@ class Role extends Component {
   };
   
   //创建角色的回调函数
-  addRole = () => {};
+  addRole = () => {
+    const form = this.addRoleFormRef.current
+    form.validateFields((err,values)=>{
+      if(!err){ // 添加角色
+        this.props.addRole(values.name)
+        //清空表单
+        form.resetFields();
+        // 隐藏对话框
+        this.setState({
+          isShowAddRoleModal: false
+        })
+
+
+      }
+    })
+  };
   //设置角色权限的回调函数
   updateRole = () => {};
   
@@ -102,7 +118,7 @@ class Role extends Component {
           okText='确认'
           cancelText='取消'
         >
-          <AddRoleForm ref={this.addRoleFormRef}/>
+          <AddRoleForm ref={this.addRoleFormRef} roles={roles}/>
         </Modal>
   
         <Modal

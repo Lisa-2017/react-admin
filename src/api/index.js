@@ -19,5 +19,7 @@ export const reqSearchProducts = ({searchKey , searchValue , pageNum, pageSize})
 
 
 export const reqGetRoles = () => axios.get('/role/get');
+export const reqAddRole = (name) => axios.post('/role/add',{name});
+
 
 
